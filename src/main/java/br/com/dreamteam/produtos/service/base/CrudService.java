@@ -5,19 +5,17 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface CrudService<MODEL> {
+public interface CrudService<DTO> {
 
-    List<MODEL> findAll();
+    List<DTO> findAll();
 
-    Page<MODEL> findAll(Pageable pageable);
+    Page<DTO> findAll(Pageable pageable);
 
-    MODEL findById(Long id);
+    DTO findById(Long id);
 
-    MODEL createElement(MODEL model);
+    DTO createElement(DTO dto);
 
-    List<MODEL> createElements(List<MODEL> model);
+    DTO updateElement(Long id, DTO dto);
 
-    MODEL updateElement(Long id, MODEL model);
-
-    boolean deleteElement(Long id);
+    void deleteElement(Long id);
 }

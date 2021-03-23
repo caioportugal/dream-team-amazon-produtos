@@ -2,16 +2,15 @@ package br.com.dreamteam.produtos.controller.base;
 
 import br.com.dreamteam.produtos.service.base.CrudService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.net.URI;
 import java.util.List;
 
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -21,73 +20,49 @@ public abstract class BaseController<K extends CrudService, MODEL, DTO>{
     protected K service;
 
     @Autowired
-    protected ModelMapper modelMapper;
-
-    @Autowired
     protected ObjectMapper objectMapper;
 
-    @GetMapping("")
-    public ResponseEntity getAllElements() {
-        List<MODEL> models = (List<MODEL>) service.findAll();
-        if (models != null && models.size() > 0) {
-            return ResponseEntity.ok(convertToListDto(models));
-        }
-        return ResponseEntity.ok(new ArrayList<>());
+    @GetMapping
+    public ResponseEntity findAll() {
+        List<DTO> dtos = (List<DTO>) service.findAll();
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/paginado")
-    public ResponseEntity getAllElements(Pageable pageable) {
-        Page<MODEL> page = (Page<MODEL>) service.findAll(pageable);
-        if (page != null && page.getTotalElements() > 0) {
-            return ResponseEntity
-                    .ok(new PageImpl(convertToListDto(page.getContent()), pageable, page.getTotalElements()));
-        }
-        return ResponseEntity.ok(new ArrayList<>());
+    public ResponseEntity findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                  @RequestParam(value = "itemsPerPage", defaultValue = "12") Integer itemsPerPage,
+                                  @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
+                                  @RequestParam(value = "direction", defaultValue = "DESC") Sort.Direction direction) {
+        PageRequest pageRequest = PageRequest.of(page, itemsPerPage, direction,  orderBy);
+        Page<DTO> pageDto = service.findAll(pageRequest);
+        return ResponseEntity.ok(pageDto);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getElementById(@PathVariable Long id) {
-        MODEL model = (MODEL) service.findById(id);
-        if (model != null) {
-            return ResponseEntity.ok(convertToDto(model));
-        }
-        return ResponseEntity.noContent().build();
+    public ResponseEntity findById(@PathVariable Long id) {
+        DTO dto = (DTO)service.findById(id);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
     public ResponseEntity createElement(@RequestBody DTO dto) {
-        MODEL model = convertToModel(dto);
-        MODEL modelCreated = (MODEL) service.createElement(model);
-        if (modelCreated != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(convertToDto(modelCreated));
-        }
-        return ResponseEntity.noContent().build();
+        dto= (DTO) service.createElement(dto);
+        URI uri = getURILocation(dto);
+        return ResponseEntity.created(uri).body(dto);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity updateElement(@PathVariable Long id, @RequestBody DTO dto) {
-        MODEL model = convertToModel(dto);
-        MODEL modelUpdate = (MODEL) service.updateElement(id, model);
-        if (modelUpdate != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(convertToDto(model));
-        }
-        return ResponseEntity.noContent().build();
+        dto = (DTO) service.updateElement(id, dto);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteElement(@PathVariable Long id) {
-        boolean success = service.deleteElement(id);
-        if (success){
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        service.deleteElement(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    protected abstract List convertToListDto(List<MODEL> models);
-
-    protected abstract DTO convertToDto(MODEL model);
-
-    protected abstract MODEL convertToModel(DTO dto);
-
-
+    protected abstract URI getURILocation(DTO dto);
 }
