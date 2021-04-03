@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-public abstract class BaseController<K extends CrudService, MODEL, DTO>{
+public abstract class BaseController<K extends CrudService, DTO>{
 
     @Autowired
     protected K service;
@@ -50,7 +50,6 @@ public abstract class BaseController<K extends CrudService, MODEL, DTO>{
         URI uri = getURILocation(dto);
         return ResponseEntity.created(uri).body(dto);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity updateElement(@PathVariable Long id, @RequestBody DTO dto) {

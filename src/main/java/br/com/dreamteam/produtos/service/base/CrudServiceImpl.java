@@ -26,20 +26,22 @@ public abstract class CrudServiceImpl<L extends JpaRepository, MODEL, DTO extend
     protected ModelMapper modelMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public List<DTO> findAll() {
         List<MODEL> models = (List<MODEL>)repository.findAll();
         return convertToListDto(models);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<DTO> findAll(Pageable pageable) {
         Page<MODEL> page = (Page<MODEL>) repository.findAll(pageable);
         return page.map(m -> convertToDto(m));
     }
 
     @Override
-    @Transactional(readOnly = true)
     @SneakyThrows
+    @Transactional(readOnly = true)
     public DTO findById(Long id) {
         Optional optionalModel = repository.findById(id);
         MODEL model = (MODEL) optionalModel.orElseThrow(() -> new ResourceNotFoundException("Resource not found for id" + id));
@@ -49,6 +51,7 @@ public abstract class CrudServiceImpl<L extends JpaRepository, MODEL, DTO extend
     @Override
     @Transactional
     public DTO createElement(DTO dto) {
+        dto.setId(null);
         MODEL model = convertToModel(dto);
         model = (MODEL) repository.save(model);
         return convertToDto(model);

@@ -4,14 +4,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "product")
-public class Product {
+@Table(name = "category")
+public class Category {
 
     @EqualsAndHashCode.Include
     @Id
@@ -19,18 +18,4 @@ public class Product {
     private Long id;
 
     private String name;
-
-    private Double value;
-
-    @ManyToOne
-    private Category category;
-
-    @ManyToOne
-    private Subcategory subcategory;
-
-
-    @OneToMany(mappedBy = "product")
-    private Set<Keyword> keywords;
-
-    private Long views;
 }

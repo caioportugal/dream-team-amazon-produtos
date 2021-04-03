@@ -1,4 +1,4 @@
-package br.com.dreamteam.produtos.exception.halder;
+package br.com.dreamteam.produtos.exception.handler;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

@@ -3,22 +3,11 @@ package br.com.dreamteam.produtos.dto;
 import br.com.dreamteam.produtos.dto.base.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-
-import java.util.List;
+import lombok.EqualsAndHashCode;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProductDTO extends BaseDTO {
+public class SubcategoryDTO extends BaseDTO {
 
     private String name;
-
-    private Double value;
-
-    private CategoryDTO category;
-
-    private SubcategoryDTO subcategory;
-
-    private List<KeywordDTO> keywords;
-
-    private Long views;
 }

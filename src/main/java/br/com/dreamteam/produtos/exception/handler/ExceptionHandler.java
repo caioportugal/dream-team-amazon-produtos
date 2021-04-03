@@ -1,4 +1,4 @@
-package br.com.dreamteam.produtos.exception.halder;
+package br.com.dreamteam.produtos.exception.handler;
 
 import br.com.dreamteam.produtos.exception.BusinessException;
 import br.com.dreamteam.produtos.exception.ResourceNotFoundException;

@@ -1,0 +1,29 @@
+version: "3.9"
+
+networks:
+  products-network:
+    driver: bridge
+
+services:
+  products-postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: "products-api"
+      POSTGRES_PASSWORD: "senhadanasa"
+      POSTGRES_DB: products
+    ports:
+      - "5432:5432"
+    networks:
+      - products-network
+
+  products-api:
+    image: lmmiranda0/products-api
+    command: ["/wait-for-it.sh", "products-postgres:5432", "-t", "10", "--" ,"java", "-jar", "products-api.jar"]
+    environment:
+      DB_HOST: products-postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - products-network
+    depends_on:
+      - products-postgres

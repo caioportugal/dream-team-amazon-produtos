@@ -5,16 +5,34 @@ import br.com.dreamteam.produtos.dto.ProductDTO;
 import br.com.dreamteam.produtos.model.Product;
 import br.com.dreamteam.produtos.service.ProductService;
 import org.modelmapper.TypeToken;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("produto")
-public class ProductController extends BaseController<ProductService, Product, ProductDTO> {
+@RequestMapping("api/produto")
+public class ProductController extends BaseController<ProductService, ProductDTO> {
+
+    @GetMapping("categoria/{categoryId}")
+    public List<ProductDTO> findByCategoryId(@PathVariable Long categoryId) {
+        List<ProductDTO>  products = service.findByCategoryId(categoryId);
+        return products;
+    }
+
+    @GetMapping("subcategoria/{subcategoryId}")
+    public List<ProductDTO> findBySubcategoryId(@PathVariable Long subcategoryId) {
+        List<ProductDTO>  products = service.findBySubcategoryId(subcategoryId);
+        return products;
+    }
+
+    @GetMapping("palavra-chave")
+    public List<ProductDTO> findAll(@RequestParam(name = "palavraChave") String keyword) {
+        List<ProductDTO> products = service.findAllByKeyword(keyword);
+        return products;
+    }
 
     @Override
     protected URI getURILocation(ProductDTO product) {

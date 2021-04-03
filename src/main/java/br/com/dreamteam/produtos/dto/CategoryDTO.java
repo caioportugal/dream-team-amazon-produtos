@@ -8,17 +8,9 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProductDTO extends BaseDTO {
+public class CategoryDTO extends BaseDTO {
 
     private String name;
 
-    private Double value;
-
-    private CategoryDTO category;
-
-    private SubcategoryDTO subcategory;
-
-    private List<KeywordDTO> keywords;
-
-    private Long views;
+    private List<SubcategoryDTO> subcategories;
 }
