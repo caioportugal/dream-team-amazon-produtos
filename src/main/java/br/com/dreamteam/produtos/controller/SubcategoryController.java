@@ -10,7 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("api/subcategoria")
+@RequestMapping("api/subcategory")
 public class SubcategoryController extends BaseController<SubcategoryService, SubcategoryDTO> {
 
     @Override

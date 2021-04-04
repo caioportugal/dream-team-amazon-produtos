@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/produto")
+@RequestMapping("api/product")
 public class ProductController extends BaseController<ProductService, ProductDTO> {
 
     @GetMapping("categoria/{categoryId}")

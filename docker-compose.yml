@@ -22,7 +22,7 @@ services:
     environment:
       DB_HOST: products-postgres
     ports:
-      - "8080:8080"
+      - "8082:8080"
     networks:
       - products-network
     depends_on:
