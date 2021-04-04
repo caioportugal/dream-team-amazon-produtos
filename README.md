@@ -14,6 +14,10 @@ API_PORT=8082
 
 after this start application run the command docker-compose up -d
 
+# Swagger documentation
+http://localhost:8082/swagger-ui.html
+
+
 ## Dependency
 
 The project use:
