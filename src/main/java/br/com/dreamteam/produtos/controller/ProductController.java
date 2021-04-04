@@ -16,19 +16,19 @@ import java.util.List;
 @RequestMapping("api/product")
 public class ProductController extends BaseController<ProductService, ProductDTO> {
 
-    @GetMapping("categoria/{categoryId}")
+    @GetMapping("category/{categoryId}")
     public List<ProductDTO> findByCategoryId(@PathVariable Long categoryId) {
         List<ProductDTO>  products = service.findByCategoryId(categoryId);
         return products;
     }
 
-    @GetMapping("subcategoria/{subcategoryId}")
+    @GetMapping("subcategory/{subcategoryId}")
     public List<ProductDTO> findBySubcategoryId(@PathVariable Long subcategoryId) {
         List<ProductDTO>  products = service.findBySubcategoryId(subcategoryId);
         return products;
     }
 
-    @GetMapping("palavra-chave")
+    @GetMapping("keyword")
     public List<ProductDTO> findAll(@RequestParam(name = "palavraChave") String keyword) {
         List<ProductDTO> products = service.findAllByKeyword(keyword);
         return products;
