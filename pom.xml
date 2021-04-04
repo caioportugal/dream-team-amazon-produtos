@@ -94,7 +94,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<repository>lmmiranda0/products-api</repository>
+							<repository>lmmiranda0/produtos-api</repository>
 							<buildArgs>
 								<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
 							</buildArgs>

@@ -6,23 +6,27 @@ networks:
 
 services:
   products-postgres:
+    container_name: databaseproduct
     image: postgres
+    env_file: .env
     environment:
-      POSTGRES_USER: "products-api"
-      POSTGRES_PASSWORD: "senhadanasa"
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: products
     ports:
-      - "5432:5432"
+      - "${DATABASE_PORT}:5432"
     networks:
       - products-network
 
   products-api:
-    image: lmmiranda0/products-api
+    container_name: appproduct
+    image: lmmiranda0/produtos-api
+    env_file: .env
     command: ["/wait-for-it.sh", "products-postgres:5432", "-t", "10", "--" ,"java", "-jar", "products-api.jar"]
     environment:
       DB_HOST: products-postgres
     ports:
-      - "8082:8080"
+      - "${API_PORT}:8080"
     networks:
       - products-network
     depends_on:
