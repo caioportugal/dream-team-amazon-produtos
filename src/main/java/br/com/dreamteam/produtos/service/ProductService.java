@@ -35,7 +35,8 @@ public class ProductService extends CrudServiceImpl<ProductRepository, Product, 
         Product product = convertToModel(productDTO);
         product = repository.save(product);
 
-        keywordService.createElements(product, productDTO.getKeywords());
+        List<Keyword> keywords = keywordService.createElements(product, productDTO.getKeywords());
+        product.setKeywords(keywords);
 
         return convertToDto(product);
     }

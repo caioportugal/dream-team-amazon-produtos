@@ -2,6 +2,8 @@ package br.com.dreamteam.produtos.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.*;
 
@@ -20,4 +22,9 @@ public class Keyword {
 
     @ManyToOne
     private Product product;
+
+    @Override
+    public String toString() {
+        return !ObjectUtils.isEmpty(description) ? description : "";
+    }
 }

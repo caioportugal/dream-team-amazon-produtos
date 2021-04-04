@@ -23,11 +23,13 @@ public class KeywordService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<Keyword> createElements(Product product, List<KeywordDTO> keywordsDTO) {
+    public List<Keyword> createElements(Product product, List<String> descriptions) {
         List<Keyword> keywords = new ArrayList<>();
 
-        keywordsDTO.forEach(keywordDTO -> {
-            Keyword keyword = convertToModel(keywordDTO);
+        descriptions.forEach(description -> {
+            Keyword keyword = new Keyword();
+
+            keyword.setDescription(description);
             keyword.setProduct(product);
 
             keywords.add(keyword);
@@ -36,9 +38,9 @@ public class KeywordService {
         return keywordRepository.saveAll(keywords);
     }
 
-    public List<Keyword> updateElements(Product product, List<KeywordDTO> keywordsDTO) {
+    public List<Keyword> updateElements(Product product, List<String> descriptions) {
         keywordRepository.deleteByProductId(product.getId());
-        return createElements(product, keywordsDTO);
+        return createElements(product, descriptions);
     }
 
     public List<Long> findKeywordsIds(String description) {

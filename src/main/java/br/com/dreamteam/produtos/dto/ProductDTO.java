@@ -18,7 +18,7 @@ public class ProductDTO extends BaseDTO {
 
     private SubcategoryDTO subcategory;
 
-    private List<KeywordDTO> keywords;
+    private List<String> keywords;
 
     private Long views;
 }
