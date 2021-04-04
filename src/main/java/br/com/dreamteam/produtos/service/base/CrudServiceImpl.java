@@ -24,6 +24,7 @@ public abstract class CrudServiceImpl<L extends JpaRepository, MODEL, DTO extend
 
     @Autowired
     protected ModelMapper modelMapper;
+    private DTO dto;
 
     @Override
     @Transactional(readOnly = true)
@@ -60,16 +61,15 @@ public abstract class CrudServiceImpl<L extends JpaRepository, MODEL, DTO extend
     @Override
     @Transactional
     public DTO updateElement(Long id, DTO dto) {
-        if (repository.existsById(id)) {
-            dto.setId(id);
-            MODEL model = (MODEL) repository.getOne(id);
-            model = convertToModel(dto);
-            model = (MODEL) repository.save(model);
-
-            return convertToDto(model);
-        } else {
+        if (!repository.existsById(id))
             throw new ResourceNotFoundException("Resource not found for id: " + id);
-        }
+
+        dto.setId(id);
+        MODEL model = (MODEL) repository.getOne(id);
+        model = convertToModel(dto);
+        model = (MODEL) repository.save(model);
+
+        return dto;
     }
 
     @Override

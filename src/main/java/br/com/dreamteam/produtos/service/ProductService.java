@@ -1,5 +1,6 @@
 package br.com.dreamteam.produtos.service;
 
+import br.com.dreamteam.produtos.dto.KeywordDTO;
 import br.com.dreamteam.produtos.dto.ProductDTO;
 import br.com.dreamteam.produtos.exception.ResourceNotFoundException;
 import br.com.dreamteam.produtos.model.Keyword;
@@ -16,17 +17,47 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.persistence.Access;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductService extends CrudServiceImpl<ProductRepository, Product, ProductDTO> {
 
     @Autowired
-    private KeywordRepository keywordRepository;
+    private KeywordService keywordService;
+
+    @Override
+    @Transactional
+    public ProductDTO createElement(ProductDTO productDTO) {
+        productDTO.setId(null);
+        productDTO.setViews(0L);
+
+        Product product = convertToModel(productDTO);
+        product = repository.save(product);
+
+        keywordService.createElements(product, productDTO.getKeywords());
+
+        return convertToDto(product);
+    }
+
+    @Override
+    @Transactional
+    public ProductDTO updateElement(Long id, ProductDTO productDTO) {
+        if (!repository.existsById(id))
+            throw new ResourceNotFoundException("Resource not found for id: " + id);
+
+        Long views = repository.findViewsById(id);
+        productDTO.setId(id);
+        productDTO.setViews(views);
+
+        Product product = convertToModel(productDTO);
+        product = repository.save(product);
+        List<Keyword> keywords = keywordService.updateElements(product, productDTO.getKeywords());
+        product.setKeywords(keywords);
+
+        return convertToDto(product);
+
+    }
 
     @Transactional
     public List<ProductDTO> findByCategoryId(Long categoryId) {
@@ -70,10 +101,7 @@ public class ProductService extends CrudServiceImpl<ProductRepository, Product, 
 
     @Transactional
     public List<ProductDTO> findAllByKeyword(String description) {
-        List<Keyword> keywords = keywordRepository.findByDescriptionContainingIgnoreCase(description);
-
-        List<Long> keywordsIds = keywords.stream()
-                .map(Keyword::getId).collect(Collectors.toList());
+        List<Long> keywordsIds = keywordService.findKeywordsIds(description);
 
         List<Product> products = repository.findByKeywordsIdIn(keywordsIds);
 

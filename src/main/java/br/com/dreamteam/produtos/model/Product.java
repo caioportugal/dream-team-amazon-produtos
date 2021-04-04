@@ -30,7 +30,7 @@ public class Product {
 
 
     @OneToMany(mappedBy = "product")
-    private Set<Keyword> keywords;
+    private List<Keyword> keywords;
 
     private Long views;
 }

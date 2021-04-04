@@ -10,4 +10,6 @@ import java.util.List;
 public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 
     List<Keyword> findByDescriptionContainingIgnoreCase(String description);
+
+    void deleteByProductId(Long productId);
 }
