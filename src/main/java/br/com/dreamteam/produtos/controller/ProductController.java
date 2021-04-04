@@ -4,6 +4,7 @@ import br.com.dreamteam.produtos.controller.base.BaseController;
 import br.com.dreamteam.produtos.dto.ProductDTO;
 import br.com.dreamteam.produtos.model.Product;
 import br.com.dreamteam.produtos.service.ProductService;
+import io.swagger.annotations.Api;
 import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@Api(tags = "Product")
 @RestController
 @RequestMapping("api/product")
 public class ProductController extends BaseController<ProductService, ProductDTO> {

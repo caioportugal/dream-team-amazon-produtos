@@ -3,12 +3,14 @@ package br.com.dreamteam.produtos.controller;
 import br.com.dreamteam.produtos.controller.base.BaseController;
 import br.com.dreamteam.produtos.dto.SubcategoryDTO;
 import br.com.dreamteam.produtos.service.SubcategoryService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+@Api(tags = "Subcategory")
 @RestController
 @RequestMapping("api/subcategory")
 public class SubcategoryController extends BaseController<SubcategoryService, SubcategoryDTO> {

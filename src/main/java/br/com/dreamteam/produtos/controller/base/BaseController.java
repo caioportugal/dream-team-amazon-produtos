@@ -28,7 +28,7 @@ public abstract class BaseController<K extends CrudService, DTO>{
         return ResponseEntity.ok(dtos);
     }
 
-    @GetMapping("/paginado")
+    @GetMapping("/paged")
     public ResponseEntity findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                   @RequestParam(value = "itemsPerPage", defaultValue = "12") Integer itemsPerPage,
                                   @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
